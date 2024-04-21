@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private final AuthRepositry authRepositry;
+      private final AuthRepositry authRepositry;
     public void register(User user){
         user.setRole("CUSTOMER");
         String hashPassword=new BCryptPasswordEncoder().encode(user.getPassword());
@@ -42,15 +42,16 @@ public class AuthService {
 
     public void delete(String username,String username2){
           User user= authRepositry.findUserByUserName(username);
-          User user2= authRepositry.findUserByUserName(username);
+          User user2= authRepositry.findUserByUserName(username2);
           if(user2==null){
                throw  new ApiException("User name Not Found!");
-          }
-        if(user.getRole().equals("ADMIN")){
+          }else if(user.getRole().equals("ADMIN")){
             authRepositry.delete(user2);
-        }
+        }else
         throw  new ApiException("Allows only Admin!");
     }
+
+    
 
     public List<User>getUsers(String username){
               User user= authRepositry.findUserByUserName(username);
@@ -59,7 +60,6 @@ public class AuthService {
         }
         return  authRepositry.findAll();
     }
-
 
 
 
